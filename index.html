@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <link rel="icon" type="image/png" href="images.money.png">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CashApp</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap">
@@ -25,7 +24,13 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        html {
+            font-size: 16px;
+            overflow-x: hidden;
         }
 
         body {
@@ -35,6 +40,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            touch-action: pan-y;
         }
 
         body:lang(en) {
@@ -43,17 +49,17 @@
 
         .header {
             background: var(--gray);
-            padding: 15px 0;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            padding: 12px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
             z-index: 1000;
         }
 
         .header-content {
-            max-width: 1200px;
+            max-width: 100%;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -62,32 +68,32 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             cursor: pointer;
         }
 
         .logo-icon {
             background: var(--primary);
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
             color: white;
         }
 
         .logo-text {
             color: white;
-            font-size: 26px;
+            font-size: 22px;
             font-weight: bold;
         }
 
         .header-controls {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
         }
 
@@ -95,33 +101,33 @@
             background: rgba(255,255,255,0.1);
             border: 2px solid rgba(255,255,255,0.2);
             color: white;
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 16px;
             transition: all 0.3s;
         }
 
         .control-btn:hover {
             background: var(--primary);
             border-color: var(--primary);
-            transform: scale(1.1);
         }
 
         .auth-btn {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 10px 25px;
-            border-radius: 25px;
-            font-size: 16px;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
+            white-space: nowrap;
         }
 
         .auth-btn:hover {
@@ -136,27 +142,51 @@
 
         .main-content {
             flex: 1;
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
             width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .welcome-screen {
+            text-align: center;
+            padding: 40px 15px;
+            width: 100%;
+        }
+
+        .welcome-icon {
+            font-size: 60px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .welcome-title {
+            font-size: 32px;
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .welcome-subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.5;
         }
 
         .user-card {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,214,50,0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,214,50,0.2);
         }
 
         .user-info {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
+            flex-direction: column;
+            gap: 15px;
         }
 
         .user-details {
@@ -166,95 +196,87 @@
         }
 
         .user-name {
-            font-size: 32px;
+            font-size: 24px;
             font-weight: bold;
-            margin-bottom: 5px;
         }
 
         .user-balance {
-            font-size: 48px;
+            font-size: 32px;
             font-weight: bold;
-            margin: 10px 0;
+            margin: 5px 0;
         }
 
         .user-id {
             background: rgba(255,255,255,0.2);
-            padding: 8px 20px;
-            border-radius: 25px;
-            font-size: 16px;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 14px;
             font-weight: 500;
         }
 
         .transfer-tabs {
             display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
+            gap: 8px;
+            margin-bottom: 20px;
             background: var(--light-gray);
-            padding: 12px;
-            border-radius: 15px;
+            padding: 10px;
+            border-radius: 12px;
         }
 
         .tab-btn {
             flex: 1;
-            padding: 16px;
+            padding: 12px;
             border: none;
             background: transparent;
-            border-radius: 12px;
-            font-size: 17px;
+            border-radius: 10px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 8px;
             transition: all 0.3s;
         }
 
         .tab-btn.active {
             background: var(--primary);
             color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,214,50,0.3);
+            box-shadow: 0 3px 10px rgba(0,214,50,0.2);
         }
 
         .tab-content {
             background: white;
-            border-radius: 20px;
-            padding: 35px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
             display: none;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .tab-content.active {
             display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .form-group {
-            margin-bottom: 28px;
+            margin-bottom: 20px;
             position: relative;
         }
 
         .form-label {
             display: block;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             font-weight: bold;
             color: var(--dark);
-            font-size: 17px;
+            font-size: 14px;
         }
 
         .form-input {
             width: 100%;
-            padding: 16px;
+            padding: 12px;
             border: 2px solid var(--light-gray);
-            border-radius: 12px;
-            font-size: 16px;
+            border-radius: 10px;
+            font-size: 14px;
             transition: all 0.3s;
             background: white;
         }
@@ -262,16 +284,15 @@
         .form-input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(0,214,50,0.1);
         }
 
         .submit-btn {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 18px 35px;
-            border-radius: 12px;
-            font-size: 18px;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             width: 100%;
@@ -279,156 +300,90 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             position: relative;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0,214,50,0.3);
         }
 
         .submit-btn:disabled {
             opacity: 0.7;
             cursor: not-allowed;
-            transform: none;
         }
 
-        .products-section {
-            margin-top: 40px;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .section-title {
-            font-size: 26px;
-            font-weight: bold;
-            color: var(--dark);
-        }
-
-        .add-product-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            font-size: 26px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 5px 15px rgba(0,214,50,0.3);
-            transition: all 0.3s;
-        }
-
-        .add-product-btn:hover {
-            transform: rotate(90deg) scale(1.1);
-        }
-
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 25px;
-        }
-
-        .product-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border: 2px solid transparent;
-            transition: all 0.3s;
+        .form-field-group {
             display: flex;
             flex-direction: column;
-        }
-
-        .product-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,214,50,0.1);
-        }
-
-        .product-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 20px;
-        }
-
-        .product-name {
-            font-size: 22px;
-            font-weight: bold;
-            color: var(--dark);
-            flex: 1;
-        }
-
-        .product-price {
-            font-size: 26px;
-            font-weight: bold;
-            color: var(--primary);
-            margin-left: 15px;
-        }
-
-        .product-info {
-            margin-top: auto;
-        }
-
-        .product-id {
-            color: #666;
-            font-size: 15px;
-            margin-bottom: 12px;
-            background: var(--light-gray);
-            padding: 6px 12px;
-            border-radius: 8px;
-            display: inline-block;
-        }
-
-        .product-seller {
-            color: #888;
-            font-size: 15px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
             gap: 8px;
+            margin-bottom: 15px;
         }
 
-        .product-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 15px;
+        .field-label {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 14px;
         }
 
-        .action-btn {
-            flex: 1;
+        .field-value {
+            font-size: 14px;
             padding: 10px;
-            border: 2px solid var(--light-gray);
-            background: transparent;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
+            background: var(--light-gray);
+            border-radius: 8px;
+            border: 2px solid transparent;
+        }
+
+        .footer {
+            background: var(--gray);
+            color: white;
+            padding: 25px 0 20px;
+            margin-top: 40px;
+            width: 100%;
+        }
+
+        .footer-content {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 0 15px;
+            text-align: center;
+        }
+
+        .footer-logo {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
+            margin-bottom: 15px;
         }
 
-        .edit-btn:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            background: rgba(0,214,50,0.1);
+        .footer-logo-icon {
+            background: var(--primary);
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
         }
 
-        .delete-btn:hover {
-            border-color: var(--error);
-            color: var(--error);
-            background: rgba(255,71,87,0.1);
+        .footer-logo-text {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .footer-text {
+            color: rgba(255,255,255,0.8);
+            font-size: 12px;
+            margin-top: 10px;
+            line-height: 1.4;
+        }
+
+        .copyright {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.7);
+            font-size: 11px;
         }
 
         .modal {
@@ -442,34 +397,30 @@
             justify-content: center;
             align-items: center;
             z-index: 2000;
-            backdrop-filter: blur(5px);
+            padding: 15px;
         }
 
         .modal-content {
             background: white;
-            border-radius: 20px;
-            padding: 35px;
-            width: 90%;
-            max-width: 500px;
-            animation: modalIn 0.3s ease;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            border-radius: 15px;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             position: relative;
-        }
-
-        @keyframes modalIn {
-            from { opacity: 0; transform: scale(0.9) translateY(-20px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .modal-title {
-            font-size: 26px;
+            font-size: 20px;
             font-weight: bold;
             color: var(--dark);
         }
@@ -477,103 +428,23 @@
         .close-btn {
             background: transparent;
             border: none;
-            font-size: 30px;
+            font-size: 24px;
             cursor: pointer;
             color: #666;
-            transition: all 0.3s;
         }
 
-        .close-btn:hover {
-            color: var(--primary);
-            transform: rotate(90deg);
+        .error-message {
+            color: var(--error);
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
         }
 
-        .welcome-screen {
-            text-align: center;
-            padding: 100px 20px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .welcome-icon {
-            font-size: 80px;
-            color: var(--primary);
-            margin-bottom: 30px;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .welcome-title {
-            font-size: 52px;
-            color: var(--dark);
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-
-        .welcome-subtitle {
-            font-size: 22px;
+        .min-length-hint {
             color: #666;
-            margin-bottom: 50px;
-            line-height: 1.6;
-        }
-
-        .footer {
-            background: var(--gray);
-            color: white;
-            padding: 40px 0 30px;
-            margin-top: 60px;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            text-align: center;
-        }
-
-        .footer-logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .footer-logo-icon {
-            background: var(--primary);
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .footer-logo-text {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .footer-text {
-            color: rgba(255,255,255,0.8);
-            font-size: 16px;
-            margin-top: 15px;
-            line-height: 1.6;
-        }
-
-        .copyright {
-            margin-top: 30px;
-            padding-top: 25px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.7);
-            font-size: 15px;
+            font-size: 11px;
+            margin-top: 4px;
+            display: block;
         }
 
         body.dark-mode {
@@ -582,7 +453,6 @@
         }
 
         body.dark-mode .tab-content,
-        body.dark-mode .product-card,
         body.dark-mode .modal-content {
             background: var(--dark-gray);
             color: var(--light);
@@ -598,50 +468,6 @@
             color: var(--light);
         }
 
-        body.dark-mode .section-title {
-            color: var(--light);
-        }
-
-        body.dark-mode .transfer-tabs {
-            background: #2C3E50;
-        }
-
-        .error-message {
-            color: var(--error);
-            font-size: 14px;
-            margin-top: 8px;
-            display: none;
-        }
-
-        .success-message {
-            color: var(--primary);
-            font-size: 14px;
-            margin-top: 8px;
-            display: none;
-        }
-
-        .form-field-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .field-label {
-            font-weight: 600;
-            color: var(--dark);
-            font-size: 16px;
-        }
-
-        .field-value {
-            font-size: 18px;
-            padding: 12px 15px;
-            background: var(--light-gray);
-            border-radius: 10px;
-            border: 2px solid transparent;
-            transition: all 0.3s;
-        }
-
         body.dark-mode .field-label {
             color: var(--light);
         }
@@ -651,61 +477,30 @@
             color: var(--light);
         }
 
-        #loadingOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            color: white;
-            font-size: 20px;
-            flex-direction: column;
-            gap: 20px;
-            backdrop-filter: blur(5px);
-        }
-
-        .spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: var(--primary);
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        body.dark-mode .transfer-tabs {
+            background: #2C3E50;
         }
 
         #notifications-container {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 15px;
+            right: 15px;
             z-index: 9998;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            max-width: 400px;
+            gap: 8px;
+            max-width: 300px;
         }
 
         .notification {
-            padding: 15px 20px;
-            border-radius: 10px;
+            padding: 12px 15px;
+            border-radius: 8px;
             color: white;
             font-weight: bold;
             animation: slideInRight 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
             cursor: pointer;
-            transition: transform 0.3s;
-        }
-
-        .notification:hover {
-            transform: translateX(-10px);
+            font-size: 13px;
         }
 
         .notification-success {
@@ -714,14 +509,6 @@
 
         .notification-error {
             background: linear-gradient(135deg, var(--error), #FF6B81);
-        }
-
-        .notification-warning {
-            background: linear-gradient(135deg, var(--warning), #FFB142);
-        }
-
-        .notification-info {
-            background: linear-gradient(135deg, var(--info), #1E90FF);
         }
 
         @keyframes slideInRight {
@@ -739,132 +526,63 @@
         }
 
         .input-with-icon input {
-            padding-right: 45px;
+            padding-right: 40px;
         }
 
-        .input-icon {
+        .eye-btn {
             position: absolute;
-            right: 15px;
+            left: 10px;
             top: 50%;
             transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
             color: #666;
+            padding: 8px;
         }
 
-        .password-strength {
-            height: 4px;
-            background: #ddd;
-            border-radius: 2px;
-            margin-top: 5px;
-            overflow: hidden;
-        }
-
-        .strength-meter {
-            height: 100%;
-            width: 0%;
-            transition: all 0.3s;
-        }
-
-        .strength-weak { background: var(--error); width: 25%; }
-        .strength-fair { background: var(--warning); width: 50%; }
-        .strength-good { background: #FFB142; width: 75%; }
-        .strength-strong { background: var(--primary); width: 100%; }
-
-        .strength-text {
-            font-size: 12px;
-            margin-top: 5px;
-            color: #666;
-        }
-
-        .min-length-hint {
-            color: #666;
-            font-size: 12px;
-            margin-top: 5px;
-            display: block;
-        }
-
-        @media (max-width: 768px) {
-            .header-content {
-                padding: 0 15px;
-            }
-
+        @media (max-width: 360px) {
             .logo-text {
-                font-size: 22px;
-            }
-
-            .user-info {
-                flex-direction: column;
-                text-align: center;
-                gap: 25px;
-            }
-
-            .user-name {
-                font-size: 28px;
-            }
-
-            .user-balance {
-                font-size: 40px;
-            }
-
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .transfer-tabs {
-                flex-direction: column;
-            }
-
-            .welcome-title {
-                font-size: 36px;
-            }
-
-            .welcome-subtitle {
                 font-size: 18px;
             }
-
-            .tab-content {
-                padding: 25px;
+            
+            .control-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 14px;
             }
-
-            .modal-content {
-                padding: 25px;
-                width: 95%;
+            
+            .auth-btn {
+                padding: 6px 15px;
+                font-size: 12px;
             }
-
-            #notifications-container {
-                max-width: 300px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .main-content {
-                padding: 0 15px;
-            }
-
-            .user-card {
-                padding: 20px;
-            }
-
-            .welcome-screen {
-                padding: 60px 15px;
-            }
-
-            .welcome-icon {
-                font-size: 60px;
-            }
-
+            
             .welcome-title {
+                font-size: 28px;
+            }
+            
+            .user-name {
+                font-size: 20px;
+            }
+            
+            .user-balance {
                 font-size: 28px;
             }
         }
 
-        .shake {
-            animation: shake 0.5s ease;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+        @media (max-width: 320px) {
+            .header-content {
+                padding: 0 10px;
+            }
+            
+            .main-content {
+                padding: 0 10px;
+            }
+            
+            .tab-btn {
+                font-size: 12px;
+                padding: 10px;
+            }
         }
     </style>
 </head>
@@ -873,7 +591,7 @@
         <div class="header-content">
             <div class="logo" onclick="goHome()">
                 <div class="logo-icon">$</div>
-                <div class="logo-text">CashApp</div>
+                <div class="logo-text" data-translate="appName">CashApp</div>
             </div>
             
             <div class="header-controls">
@@ -883,10 +601,10 @@
                 <button class="control-btn" id="languageToggle" title="تبديل اللغة">
                     <i class="fas fa-language"></i>
                 </button>
-                <button class="auth-btn" id="loginBtn" onclick="openLoginModal()">
+                <button class="auth-btn" id="loginBtn" onclick="openLoginModal()" data-translate="login">
                     تسجيل الدخول
                 </button>
-                <button class="auth-btn secondary" id="logoutBtn" onclick="logout()" style="display:none;">
+                <button class="auth-btn secondary" id="logoutBtn" onclick="logout()" style="display:none;" data-translate="logout">
                     تسجيل الخروج
                 </button>
             </div>
@@ -898,11 +616,11 @@
             <div class="welcome-icon">
                 <i class="fas fa-wallet"></i>
             </div>
-            <h1 class="welcome-title">CashApp</h1>
-            <p class="welcome-subtitle">
+            <h1 class="welcome-title" data-translate="appName">CashApp</h1>
+            <p class="welcome-subtitle" data-translate="appDescription">
                 تحويل واستلام الأموال بسهولة وأمان
             </p>
-            <button class="auth-btn" onclick="openLoginModal()" style="padding: 18px 45px; font-size: 18px;">
+            <button class="auth-btn" onclick="openLoginModal()" style="padding: 12px 30px; font-size: 16px;" data-translate="login">
                 تسجيل الدخول
             </button>
         </div>
@@ -921,57 +639,45 @@
             <div class="transfer-tabs">
                 <button class="tab-btn active" onclick="switchTab('transfer')">
                     <i class="fas fa-paper-plane"></i>
-                    <span class="tab-text">تحويل</span>
+                    <span class="tab-text" data-translate="transfer">تحويل</span>
                 </button>
                 <button class="tab-btn" onclick="switchTab('receive')">
                     <i class="fas fa-qrcode"></i>
-                    <span class="tab-text">استلام</span>
+                    <span class="tab-text" data-translate="receive">استلام</span>
                 </button>
             </div>
 
             <div class="tab-content active" id="transferTab">
                 <div class="form-group">
-                    <label class="form-label" for="recipientId">معرف المستلم</label>
-                    <input type="text" id="recipientId" class="form-input" placeholder="معرف المستلم">
+                    <label class="form-label" for="recipientId" data-translate="recipientId">معرف المستلم</label>
+                    <input type="text" id="recipientId" class="form-input" data-translate-placeholder="recipientIdPlaceholder">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="transferAmount">المبلغ</label>
-                    <input type="number" id="transferAmount" class="form-input" placeholder="المبلغ بالدولار" step="0.01">
+                    <label class="form-label" for="transferAmount" data-translate="amount">المبلغ</label>
+                    <input type="number" id="transferAmount" class="form-input" step="0.01" data-translate-placeholder="amountPlaceholder">
                 </div>
                 <button class="submit-btn" onclick="transferMoney()" id="transferBtn">
                     <i class="fas fa-paper-plane"></i>
-                    <span class="btn-text">تحويل الآن</span>
+                    <span class="btn-text" data-translate="transferNow">تحويل الآن</span>
                 </button>
             </div>
 
             <div class="tab-content" id="receiveTab">
                 <div class="form-field-group">
-                    <div class="field-label">اسم المستخدم</div>
+                    <div class="field-label" data-translate="username">اسم المستخدم</div>
                     <div class="field-value" id="receiveName">-</div>
                 </div>
                 <div class="form-field-group">
-                    <div class="field-label">المبلغ الإجمالي</div>
+                    <div class="field-label" data-translate="totalAmount">المبلغ الإجمالي</div>
                     <div class="field-value" id="receiveBalance">$0.00</div>
                 </div>
                 <div class="form-field-group">
-                    <div class="field-label">معرف المستخدم</div>
+                    <div class="field-label" data-translate="userId">معرف المستخدم</div>
                     <div class="field-value" id="receiveId">-</div>
                 </div>
-                <p style="color: #666; text-align: center; margin-top: 30px; font-size: 15px;">
+                <p style="color: #666; text-align: center; margin-top: 20px; font-size: 12px;" data-translate="shareId">
                     شارك معرفك مع الآخرين لاستلام الأموال
                 </p>
-            </div>
-
-            <div class="products-section">
-                <div class="section-header">
-                    <h2 class="section-title">منتجاتي</h2>
-                    <button class="add-product-btn" onclick="openAddProductModal()" title="إضافة منتج جديد">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                </div>
-                
-                <div class="products-grid" id="productsGrid">
-                </div>
             </div>
         </div>
     </div>
@@ -980,12 +686,12 @@
         <div class="footer-content">
             <div class="footer-logo">
                 <div class="footer-logo-icon">$</div>
-                <div class="footer-logo-text">CashApp</div>
+                <div class="footer-logo-text" data-translate="appName">CashApp</div>
             </div>
-            <p class="footer-text">
+            <p class="footer-text" data-translate="footerDescription">
                 تطبيق آمن وسريع لتحويل واستلام الأموال بين المستخدمين
             </p>
-            <div class="copyright">
+            <div class="copyright" data-translate="copyright">
                 جميع الحقوق محفوظة لتطبيق CashApp © 2025
             </div>
         </div>
@@ -994,62 +700,37 @@
     <div class="modal" id="loginModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title" id="loginModalTitle">تسجيل الدخول</h3>
+                <h3 class="modal-title" data-translate="login">تسجيل الدخول</h3>
                 <button class="close-btn" onclick="closeLoginModal()">&times;</button>
             </div>
             
             <div class="form-group">
-                <label class="form-label" for="loginUsername">اسم المستخدم</label>
-                <input type="text" id="loginUsername" class="form-input" placeholder="اسم المستخدم">
+                <label class="form-label" for="loginUsername" data-translate="username">اسم المستخدم</label>
+                <input type="text" id="loginUsername" class="form-input" data-translate-placeholder="usernamePlaceholder">
                 <div class="error-message" id="usernameError"></div>
-                <span class="min-length-hint">الحد الأدنى: 12 حرف</span>
+                <span class="min-length-hint" data-translate="usernameHint">الحد الأدنى: 12 حرف</span>
             </div>
             
             <div class="form-group">
-                <label class="form-label" for="loginPassword">كلمة السر</label>
+                <label class="form-label" for="loginPassword" data-translate="password">كلمة السر</label>
                 <div class="input-with-icon">
-                    <input type="password" id="loginPassword" class="form-input" placeholder="كلمة السر">
-                    <button onclick="togglePasswordVisibility('loginPassword')" 
-                            style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #666; padding: 10px;">
+                    <input type="password" id="loginPassword" class="form-input" data-translate-placeholder="passwordPlaceholder">
+                    <button class="eye-btn" onclick="togglePasswordVisibility('loginPassword')">
                         <i class="fas fa-eye"></i>
                     </button>
                 </div>
                 <div class="error-message" id="passwordError"></div>
-                <span class="min-length-hint">الحد الأدنى: 6 أحرف</span>
+                <span class="min-length-hint" data-translate="passwordHint">الحد الأدنى: 6 أحرف</span>
             </div>
             
             <button class="submit-btn" onclick="login()" id="loginSubmitBtn">
                 <i class="fas fa-sign-in-alt"></i>
-                تسجيل الدخول
+                <span data-translate="login">تسجيل الدخول</span>
             </button>
             
-            <p style="text-align: center; margin-top: 25px; color: #666; font-size: 15px;">
+            <p style="text-align: center; margin-top: 15px; color: #666; font-size: 12px;" data-translate="loginNote">
                 سيتم إنشاء حساب جديد إذا لم يكن موجوداً
             </p>
-        </div>
-    </div>
-
-    <div class="modal" id="productModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="productModalTitle">إضافة منتج جديد</h3>
-                <button class="close-btn" onclick="closeProductModal()">&times;</button>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label" for="productName">اسم المنتج</label>
-                <input type="text" id="productName" class="form-input" placeholder="اسم المنتج">
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label" for="productPrice">سعر المنتج ($)</label>
-                <input type="number" id="productPrice" class="form-input" placeholder="سعر المنتج" step="0.01">
-            </div>
-            
-            <button class="submit-btn" onclick="saveProduct()" id="saveProductBtn">
-                <i class="fas fa-save"></i>
-                حفظ المنتج
-            </button>
         </div>
     </div>
 
@@ -1081,164 +762,171 @@
     </script>
 
     <script>
+        // ========== المتغيرات العامة ==========
         let user = null;
-        let currentUserID = null;
-        let editingProductId = null;
         let notificationSystem = null;
         
+        // ========== الترجمات الكاملة ==========
         const translations = {
             ar: {
-                "تسجيل الدخول": "تسجيل الدخول",
-                "تسجيل الخروج": "تسجيل الخروج",
-                "تحويل": "تحويل",
-                "استلام": "استلام",
-                "تحويل الآن": "تحويل الآن",
-                "منتجاتي": "منتجاتي",
-                "إضافة منتج جديد": "إضافة منتج جديد",
-                "حفظ المنتج": "حفظ المنتج",
-                "اسم المستخدم": "اسم المستخدم",
-                "كلمة السر": "كلمة السر",
-                "معرف المستلم": "معرف المستلم",
-                "المبلغ": "المبلغ",
-                "اسم المنتج": "اسم المنتج",
-                "سعر المنتج ($)": "سعر المنتج ($)",
-                "المبلغ الإجمالي": "المبلغ الإجمالي",
-                "معرف المستخدم": "معرف المستخدم"
+                appName: "CashApp",
+                appDescription: "تحويل واستلام الأموال بسهولة وأمان",
+                login: "تسجيل الدخول",
+                logout: "تسجيل الخروج",
+                transfer: "تحويل",
+                receive: "استلام",
+                transferNow: "تحويل الآن",
+                recipientId: "معرف المستلم",
+                recipientIdPlaceholder: "معرف المستلم",
+                amount: "المبلغ",
+                amountPlaceholder: "المبلغ بالدولار",
+                username: "اسم المستخدم",
+                usernamePlaceholder: "اسم المستخدم",
+                password: "كلمة السر",
+                passwordPlaceholder: "كلمة السر",
+                totalAmount: "المبلغ الإجمالي",
+                userId: "معرف المستخدم",
+                shareId: "شارك معرفك مع الآخرين لاستلام الأموال",
+                usernameHint: "الحد الأدنى: 12 حرف",
+                passwordHint: "الحد الأدنى: 6 أحرف",
+                loginNote: "سيتم إنشاء حساب جديد إذا لم يكن موجوداً",
+                footerDescription: "تطبيق آمن وسريع لتحويل واستلام الأموال بين المستخدمين",
+                copyright: "جميع الحقوق محفوظة لتطبيق CashApp © 2025",
+                transferSuccess: "تم التحويل بنجاح",
+                transferError: "خطأ في التحويل",
+                loginSuccess: "تم تسجيل الدخول بنجاح",
+                loginError: "خطأ في تسجيل الدخول",
+                registerSuccess: "تم إنشاء الحساب بنجاح",
+                insufficientBalance: "رصيدك غير كافي",
+                invalidRecipient: "الحساب المستهدف غير موجود",
+                selfTransfer: "لا يمكن تحويل الأموال إلى نفسك",
+                requiredField: "هذا الحقل مطلوب",
+                minUsername: "اسم المستخدم يجب أن يكون 12 حرف على الأقل",
+                minPassword: "كلمة السر يجب أن تكون 6 أحرف على الأقل",
+                invalidAmount: "يرجى إدخال مبلغ صحيح"
             },
             en: {
-                "تسجيل الدخول": "Login",
-                "تسجيل الخروج": "Logout",
-                "تحويل": "Transfer",
-                "استلام": "Receive",
-                "تحويل الآن": "Transfer Now",
-                "منتجاتي": "My Products",
-                "إضافة منتج جديد": "Add New Product",
-                "حفظ المنتج": "Save Product",
-                "اسم المستخدم": "Username",
-                "كلمة السر": "Password",
-                "معرف المستلم": "Recipient ID",
-                "المبلغ": "Amount",
-                "اسم المنتج": "Product Name",
-                "سعر المنتج ($)": "Product Price ($)",
-                "المبلغ الإجمالي": "Total Amount",
-                "معرف المستخدم": "User ID"
+                appName: "CashApp",
+                appDescription: "Transfer and receive money easily and securely",
+                login: "Login",
+                logout: "Logout",
+                transfer: "Transfer",
+                receive: "Receive",
+                transferNow: "Transfer Now",
+                recipientId: "Recipient ID",
+                recipientIdPlaceholder: "Recipient ID",
+                amount: "Amount",
+                amountPlaceholder: "Amount in dollars",
+                username: "Username",
+                usernamePlaceholder: "Username",
+                password: "Password",
+                passwordPlaceholder: "Password",
+                totalAmount: "Total Amount",
+                userId: "User ID",
+                shareId: "Share your ID with others to receive money",
+                usernameHint: "Minimum: 12 characters",
+                passwordHint: "Minimum: 6 characters",
+                loginNote: "New account will be created if not exists",
+                footerDescription: "Secure and fast app for transferring and receiving money between users",
+                copyright: "All rights reserved to CashApp © 2025",
+                transferSuccess: "Transfer successful",
+                transferError: "Transfer error",
+                loginSuccess: "Login successful",
+                loginError: "Login error",
+                registerSuccess: "Account created successfully",
+                insufficientBalance: "Insufficient balance",
+                invalidRecipient: "Target account not found",
+                selfTransfer: "Cannot transfer money to yourself",
+                requiredField: "This field is required",
+                minUsername: "Username must be at least 12 characters",
+                minPassword: "Password must be at least 6 characters",
+                invalidAmount: "Please enter a valid amount"
             }
         };
 
+        // ========== تهيئة التطبيق ==========
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('themeToggle').addEventListener('click', toggleTheme);
             document.getElementById('languageToggle').addEventListener('click', toggleLanguage);
             
             loadPreferences();
             loadUser();
-            setupValidation();
             setupNotifications();
+            setupEventListeners();
         });
 
-        class NotificationSystem {
-            constructor() {
-                this.notifications = [];
-                this.container = null;
-                this.init();
-            }
-            
-            init() {
-                this.container = document.createElement('div');
-                this.container.id = 'notifications-container';
-                document.body.appendChild(this.container);
-            }
-            
-            show(message, type = 'info', duration = 5000) {
-                const id = Date.now();
-                const notification = {
-                    id,
-                    message,
-                    type,
-                    duration
-                };
-                
-                this.notifications.push(notification);
-                this.renderNotification(notification);
-                
-                setTimeout(() => {
-                    this.remove(id);
-                }, duration);
-                
-                return id;
-            }
-            
-            renderNotification(notification) {
-                const div = document.createElement('div');
-                div.className = `notification notification-${notification.type}`;
-                div.dataset.id = notification.id;
-                div.innerHTML = `
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <i class="fas fa-${this.getIcon(notification.type)}"></i>
-                        <div>${notification.message}</div>
-                    </div>
-                `;
-                
-                div.onclick = () => this.remove(notification.id);
-                
-                this.container.appendChild(div);
-                
-                setTimeout(() => {
-                    if (div.parentNode) {
-                        div.style.animation = 'slideOutRight 0.3s ease';
-                        setTimeout(() => {
-                            if (div.parentNode) div.remove();
-                        }, 300);
-                    }
-                }, notification.duration);
-            }
-            
-            getIcon(type) {
-                const icons = {
-                    'success': 'check-circle',
-                    'error': 'exclamation-circle',
-                    'warning': 'exclamation-triangle',
-                    'info': 'info-circle'
-                };
-                return icons[type] || 'info-circle';
-            }
-            
-            remove(id) {
-                const notification = document.querySelector(`[data-id="${id}"]`);
-                if (notification) {
-                    notification.style.animation = 'slideOutRight 0.3s ease';
-                    setTimeout(() => notification.remove(), 300);
-                }
-                
-                this.notifications = this.notifications.filter(n => n.id !== id);
-            }
-        }
-
+        // ========== نظام الإشعارات ==========
         function setupNotifications() {
-            notificationSystem = new NotificationSystem();
+            notificationSystem = {
+                notifications: [],
+                container: null,
+                
+                init: function() {
+                    this.container = document.createElement('div');
+                    this.container.id = 'notifications-container';
+                    document.body.appendChild(this.container);
+                },
+                
+                show: function(message, type = 'info', duration = 3000) {
+                    if (!this.container) this.init();
+                    
+                    const id = Date.now();
+                    const notification = {
+                        id,
+                        message,
+                        type,
+                        duration
+                    };
+                    
+                    this.notifications.push(notification);
+                    this.renderNotification(notification);
+                    
+                    setTimeout(() => {
+                        this.remove(id);
+                    }, duration);
+                    
+                    return id;
+                },
+                
+                renderNotification: function(notification) {
+                    const div = document.createElement('div');
+                    div.className = `notification notification-${notification.type}`;
+                    div.dataset.id = notification.id;
+                    div.textContent = notification.message;
+                    
+                    div.onclick = () => this.remove(notification.id);
+                    
+                    this.container.appendChild(div);
+                    
+                    setTimeout(() => {
+                        if (div.parentNode) {
+                            div.style.animation = 'slideOutRight 0.3s ease';
+                            setTimeout(() => {
+                                if (div.parentNode) div.remove();
+                            }, 300);
+                        }
+                    }, notification.duration);
+                },
+                
+                remove: function(id) {
+                    const notification = document.querySelector(`[data-id="${id}"]`);
+                    if (notification) {
+                        notification.style.animation = 'slideOutRight 0.3s ease';
+                        setTimeout(() => notification.remove(), 300);
+                    }
+                    
+                    this.notifications = this.notifications.filter(n => n.id !== id);
+                }
+            };
         }
 
-        function showNotification(message, type = 'info', duration = 5000) {
-            if (notificationSystem) {
-                return notificationSystem.show(message, type, duration);
-            }
+        function showNotification(messageKey, type = 'info') {
+            const currentLang = document.documentElement.lang;
+            const message = translations[currentLang][messageKey] || messageKey;
+            return notificationSystem.show(message, type);
         }
 
-        function showLoading(message = 'جاري المعالجة...') {
-            const loadingDiv = document.createElement('div');
-            loadingDiv.id = 'loadingOverlay';
-            loadingDiv.innerHTML = `
-                <div class="spinner"></div>
-                <div>${message}</div>
-            `;
-            document.body.appendChild(loadingDiv);
-            return loadingDiv;
-        }
-
-        function hideLoading() {
-            const loadingDiv = document.getElementById('loadingOverlay');
-            if (loadingDiv) loadingDiv.remove();
-        }
-
+        // ========== إدارة الثيم ==========
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
             const icon = document.querySelector('#themeToggle i');
@@ -1251,6 +939,7 @@
             }
         }
 
+        // ========== إدارة اللغة ==========
         function toggleLanguage() {
             const html = document.documentElement;
             const currentLang = html.lang;
@@ -1260,69 +949,30 @@
             html.dir = newLang === 'ar' ? 'rtl' : 'ltr';
             localStorage.setItem('language', newLang);
             
-            updateTexts(newLang);
+            updateAllTexts(newLang);
         }
 
-        function updateTexts(lang) {
+        function updateAllTexts(lang) {
             const texts = translations[lang];
             
-            document.querySelectorAll('.tab-text').forEach(el => {
-                const text = el.textContent.trim();
-                if (texts[text]) {
-                    el.textContent = texts[text];
+            document.querySelectorAll('[data-translate]').forEach(el => {
+                const key = el.getAttribute('data-translate');
+                if (texts[key]) {
+                    el.textContent = texts[key];
+                }
+            });
+            
+            document.querySelectorAll('[data-translate-placeholder]').forEach(input => {
+                const key = input.getAttribute('data-translate-placeholder');
+                if (texts[key]) {
+                    input.placeholder = texts[key];
                 }
             });
             
             document.querySelectorAll('.btn-text').forEach(el => {
-                const text = el.textContent.trim();
-                if (texts[text]) {
-                    el.textContent = texts[text];
-                }
-            });
-            
-            document.querySelectorAll('.form-label').forEach(label => {
-                const text = label.textContent.trim();
-                if (texts[text]) {
-                    label.textContent = texts[text];
-                }
-            });
-            
-            document.querySelectorAll('.field-label').forEach(label => {
-                const text = label.textContent.trim();
-                if (texts[text]) {
-                    label.textContent = texts[text];
-                }
-            });
-            
-            document.querySelectorAll('.modal-title').forEach(title => {
-                const text = title.textContent.trim();
-                if (texts[text]) {
-                    title.textContent = texts[text];
-                }
-            });
-            
-            document.getElementById('loginBtn').textContent = texts["تسجيل الدخول"];
-            document.getElementById('logoutBtn').textContent = texts["تسجيل الخروج"];
-            
-            document.getElementById('loginModalTitle').textContent = texts["تسجيل الدخول"];
-            document.getElementById('loginSubmitBtn').innerHTML = `<i class="fas fa-sign-in-alt"></i> ${texts["تسجيل الدخول"]}`;
-            
-            const welcomeBtn = document.querySelector('.welcome-screen .auth-btn');
-            if (welcomeBtn) {
-                welcomeBtn.textContent = texts["تسجيل الدخول"];
-            }
-            
-            document.getElementById('transferBtn').innerHTML = `<i class="fas fa-paper-plane"></i> <span class="btn-text">${texts["تحويل الآن"]}</span>`;
-            
-            document.getElementById('productModalTitle').textContent = texts["إضافة منتج جديد"];
-            document.getElementById('saveProductBtn').innerHTML = `<i class="fas fa-save"></i> ${texts["حفظ المنتج"]}`;
-            
-            document.querySelector('.section-title').textContent = texts["منتجاتي"];
-            
-            document.querySelectorAll('.form-input').forEach(input => {
-                const placeholder = input.getAttribute('placeholder');
-                if (placeholder && texts[placeholder]) {
-                    input.setAttribute('placeholder', texts[placeholder]);
+                const key = el.getAttribute('data-translate');
+                if (texts[key]) {
+                    el.textContent = texts[key];
                 }
             });
         }
@@ -1337,9 +987,42 @@
             const savedLang = localStorage.getItem('language') || 'ar';
             document.documentElement.lang = savedLang;
             document.documentElement.dir = savedLang === 'ar' ? 'rtl' : 'ltr';
-            updateTexts(savedLang);
+            updateAllTexts(savedLang);
         }
 
+        // ========== إعداد مستمعات الأحداث ==========
+        function setupEventListeners() {
+            document.getElementById('loginUsername').addEventListener('input', validateUsername);
+            document.getElementById('loginPassword').addEventListener('input', validatePassword);
+        }
+
+        function validateUsername() {
+            const username = this.value.trim();
+            const errorElement = document.getElementById('usernameError');
+            const currentLang = document.documentElement.lang;
+            
+            if (username.length > 0 && username.length < 12) {
+                errorElement.textContent = translations[currentLang].minUsername;
+                errorElement.style.display = 'block';
+            } else {
+                errorElement.style.display = 'none';
+            }
+        }
+
+        function validatePassword() {
+            const password = this.value.trim();
+            const errorElement = document.getElementById('passwordError');
+            const currentLang = document.documentElement.lang;
+            
+            if (password.length > 0 && password.length < 6) {
+                errorElement.textContent = translations[currentLang].minPassword;
+                errorElement.style.display = 'block';
+            } else {
+                errorElement.style.display = 'none';
+            }
+        }
+
+        // ========== إدارة المستخدم ==========
         function openLoginModal() {
             document.getElementById('loginModal').style.display = 'flex';
         }
@@ -1348,12 +1031,13 @@
             document.getElementById('loginModal').style.display = 'none';
             document.getElementById('loginUsername').value = '';
             document.getElementById('loginPassword').value = '';
-            hideErrors();
+            document.getElementById('usernameError').style.display = 'none';
+            document.getElementById('passwordError').style.display = 'none';
         }
 
         function togglePasswordVisibility(inputId) {
             const passwordInput = document.getElementById(inputId);
-            const eyeIcon = passwordInput.parentElement.querySelector('button i');
+            const eyeIcon = passwordInput.parentElement.querySelector('i');
             
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
@@ -1364,10 +1048,6 @@
             }
         }
 
-        function generateUserId() {
-            return Math.floor(10000000000 + Math.random() * 90000000000).toString();
-        }
-
         async function hashPassword(password) {
             try {
                 const encoder = new TextEncoder();
@@ -1376,67 +1056,33 @@
                 const hashArray = Array.from(new Uint8Array(hashBuffer));
                 return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
             } catch (error) {
-                console.error('خطأ في تجزئة كلمة المرور:', error);
+                console.error('Error hashing password:', error);
                 throw error;
             }
         }
 
-        function setupValidation() {
-            document.getElementById('loginUsername').addEventListener('input', function() {
-                const username = this.value.trim();
-                const errorElement = document.getElementById('usernameError');
-                
-                if (username.length > 0 && username.length < 12) {
-                    errorElement.textContent = 'اسم المستخدم يجب أن يكون 12 حرف على الأقل';
-                    errorElement.style.display = 'block';
-                    this.classList.add('shake');
-                    setTimeout(() => this.classList.remove('shake'), 500);
-                } else {
-                    errorElement.style.display = 'none';
-                    this.classList.remove('shake');
-                }
-            });
-            
-            document.getElementById('loginPassword').addEventListener('input', function() {
-                const password = this.value.trim();
-                const errorElement = document.getElementById('passwordError');
-                
-                if (password.length > 0 && password.length < 6) {
-                    errorElement.textContent = 'كلمة السر يجب أن تكون 6 أحرف على الأقل';
-                    errorElement.style.display = 'block';
-                    this.classList.add('shake');
-                    setTimeout(() => this.classList.remove('shake'), 500);
-                } else {
-                    errorElement.style.display = 'none';
-                    this.classList.remove('shake');
-                }
-            });
-        }
-
-        function hideErrors() {
-            document.getElementById('usernameError').style.display = 'none';
-            document.getElementById('passwordError').style.display = 'none';
+        function generateUserId() {
+            return Math.floor(10000000000 + Math.random() * 90000000000).toString();
         }
 
         async function login() {
             const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value.trim();
             const submitBtn = document.getElementById('loginSubmitBtn');
+            const currentLang = document.documentElement.lang;
             
             if (username.length < 12) {
-                showNotification('اسم المستخدم يجب أن يكون 12 حرف على الأقل', 'error');
-                document.getElementById('loginUsername').focus();
+                showNotification('minUsername', 'error');
                 return;
             }
             
             if (password.length < 6) {
-                showNotification('كلمة السر يجب أن تكون 6 أحرف على الأقل', 'error');
-                document.getElementById('loginPassword').focus();
+                showNotification('minPassword', 'error');
                 return;
             }
             
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التسجيل...';
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             
             try {
                 const hashedPassword = await hashPassword(password);
@@ -1464,7 +1110,6 @@
                         id: userId,
                         passwordHash: hashedPassword,
                         money: 0,
-                        products: {},
                         createdAt: new Date().toISOString(),
                         lastLogin: new Date().toISOString()
                     });
@@ -1475,21 +1120,20 @@
                         name: username,
                         id: userId,
                         passwordHash: hashedPassword,
-                        money: 0,
-                        products: {}
+                        money: 0
                     };
                     
-                    showNotification('تم إنشاء حساب جديد بنجاح!', 'success');
+                    showNotification('registerSuccess', 'success');
                 } else {
                     const userData = snap.val();
                     
                     if (userData.name !== username) {
-                        showNotification('اسم المستخدم غير صحيح', 'error');
+                        showNotification('loginError', 'error');
                         return;
                     }
                     
                     if (userData.passwordHash !== hashedPassword) {
-                        showNotification('كلمة السر غير صحيحة', 'error');
+                        showNotification('loginError', 'error');
                         return;
                     }
                     
@@ -1497,7 +1141,7 @@
                     
                     await updateDB(userRef, { lastLogin: new Date().toISOString() });
                     
-                    showNotification('تم تسجيل الدخول بنجاح!', 'success');
+                    showNotification('loginSuccess', 'success');
                 }
                 
                 localStorage.setItem('userId', userId);
@@ -1509,21 +1153,21 @@
                 monitorUserData(userId);
                 
             } catch (error) {
-                console.error('خطأ في تسجيل الدخول:', error);
-                showNotification('حدث خطأ في تسجيل الدخول', 'error');
+                console.error('Login error:', error);
+                showNotification('loginError', 'error');
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
+                const currentLang = document.documentElement.lang;
+                submitBtn.innerHTML = `<i class="fas fa-sign-in-alt"></i> <span>${translations[currentLang].login}</span>`;
             }
         }
 
         function logout() {
             user = null;
-            currentUserID = null;
             localStorage.removeItem('userId');
             localStorage.removeItem('userName');
             updateUI();
-            showNotification('تم تسجيل الخروج بنجاح', 'success');
+            showNotification('logout', 'success');
         }
 
         async function loadUser() {
@@ -1532,8 +1176,6 @@
             
             if (userId && userName) {
                 try {
-                    const loading = showLoading('جاري تحميل البيانات...');
-                    
                     const userRef = childDB(refDB(db), 'users/' + userId);
                     const snap = await getDB(userRef);
                     
@@ -1548,12 +1190,8 @@
                             logout();
                         }
                     }
-                    
-                    hideLoading();
                 } catch (error) {
-                    console.error('خطأ في تحميل المستخدم:', error);
-                    showNotification('خطأ في تحميل بيانات المستخدم', 'error');
-                    hideLoading();
+                    console.error('Error loading user:', error);
                 }
             }
             
@@ -1571,17 +1209,7 @@
             });
         }
 
-        async function safeDBOperation(operation, errorMessage = 'حدث خطأ في العملية') {
-            try {
-                const result = await operation();
-                return result;
-            } catch (error) {
-                console.error('خطأ في قاعدة البيانات:', error);
-                showNotification(errorMessage, 'error');
-                throw error;
-            }
-        }
-
+        // ========== تحديث الواجهة ==========
         function updateUI() {
             if (user) {
                 document.getElementById('welcomeScreen').style.display = 'none';
@@ -1597,8 +1225,6 @@
                 document.getElementById('loginBtn').style.display = 'none';
                 document.getElementById('logoutBtn').style.display = 'inline-block';
                 
-                displayProducts();
-                
             } else {
                 document.getElementById('welcomeScreen').style.display = 'block';
                 document.getElementById('userContent').style.display = 'none';
@@ -1608,6 +1234,7 @@
             }
         }
 
+        // ========== إدارة التبويبات ==========
         function switchTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
@@ -1621,47 +1248,47 @@
             document.querySelector(`.tab-btn[onclick*="${tabName}"]`).classList.add('active');
         }
 
+        // ========== التحويل ==========
         async function transferMoney() {
             if (!user) {
-                showNotification('يرجى تسجيل الدخول أولاً', 'error');
+                showNotification('login', 'error');
                 return;
             }
             
             const recipientId = document.getElementById('recipientId').value.trim();
             const amountInput = document.getElementById('transferAmount').value.trim();
             const transferBtn = document.getElementById('transferBtn');
+            const currentLang = document.documentElement.lang;
             
             if (!recipientId) {
-                showNotification('يرجى إدخال معرف المستلم', 'error');
                 document.getElementById('recipientId').focus();
                 return;
             }
             
             if (!amountInput) {
-                showNotification('يرجى إدخال المبلغ', 'error');
                 document.getElementById('transferAmount').focus();
                 return;
             }
             
             const amount = parseFloat(amountInput);
             if (isNaN(amount) || amount <= 0) {
-                showNotification('يرجى إدخال مبلغ صحيح', 'error');
+                showNotification('invalidAmount', 'error');
                 document.getElementById('transferAmount').focus();
                 return;
             }
             
             if (amount > user.money) {
-                showNotification('رصيدك غير كافي', 'error');
+                showNotification('insufficientBalance', 'error');
                 return;
             }
             
             if (recipientId === user.id) {
-                showNotification('لا يمكن تحويل الأموال إلى نفسك', 'error');
+                showNotification('selfTransfer', 'error');
                 return;
             }
             
             transferBtn.disabled = true;
-            transferBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحويل...';
+            transferBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             
             try {
                 const fromRef = refDB(db, 'users/' + user.id);
@@ -1673,7 +1300,7 @@
                 ]);
                 
                 if (!toSnap.exists()) {
-                    showNotification('الحساب المستهدف غير موجود', 'error');
+                    showNotification('invalidRecipient', 'error');
                     return;
                 }
                 
@@ -1681,7 +1308,7 @@
                 const toMoney = toSnap.val().money || 0;
                 
                 if (fromMoney < amount) {
-                    showNotification('رصيدك غير كافي', 'error');
+                    showNotification('insufficientBalance', 'error');
                     return;
                 }
                 
@@ -1690,176 +1317,22 @@
                     updateDB(toRef, { money: toMoney + amount })
                 ]);
                 
-                const transferId = Date.now().toString();
-                const transferRef = refDB(db, 'transfers/' + transferId);
-                await setDB(transferRef, {
-                    from: user.id,
-                    fromName: user.name,
-                    to: recipientId,
-                    toName: toSnap.val().name,
-                    amount: amount,
-                    date: new Date().toISOString(),
-                    status: 'completed'
-                });
-                
                 document.getElementById('recipientId').value = '';
                 document.getElementById('transferAmount').value = '';
                 
-                showNotification(`تم تحويل $${amount.toFixed(2)} بنجاح`, 'success');
+                showNotification('transferSuccess', 'success');
                 
             } catch (error) {
-                console.error('خطأ في التحويل:', error);
-                showNotification('حدث خطأ في عملية التحويل', 'error');
+                console.error('Transfer error:', error);
+                showNotification('transferError', 'error');
             } finally {
                 transferBtn.disabled = false;
-                transferBtn.innerHTML = '<i class="fas fa-paper-plane"></i> <span class="btn-text">تحويل الآن</span>';
+                const currentLang = document.documentElement.lang;
+                transferBtn.innerHTML = `<i class="fas fa-paper-plane"></i> <span class="btn-text">${translations[currentLang].transferNow}</span>`;
             }
         }
 
-        function openAddProductModal() {
-            if (!user) {
-                showNotification('يرجى تسجيل الدخول أولاً', 'error');
-                return;
-            }
-            
-            editingProductId = null;
-            document.getElementById('productModalTitle').textContent = 'إضافة منتج جديد';
-            document.getElementById('productName').value = '';
-            document.getElementById('productPrice').value = '';
-            document.getElementById('productModal').style.display = 'flex';
-        }
-
-        function openEditProductModal(productId) {
-            if (!user || !user.products || !user.products[productId]) return;
-            
-            const product = user.products[productId];
-            editingProductId = productId;
-            
-            document.getElementById('productModalTitle').textContent = 'تعديل المنتج';
-            document.getElementById('productName').value = product.name;
-            document.getElementById('productPrice').value = product.price;
-            document.getElementById('productModal').style.display = 'flex';
-        }
-
-        function closeProductModal() {
-            document.getElementById('productModal').style.display = 'none';
-            editingProductId = null;
-        }
-
-        async function saveProduct() {
-            if (!user) {
-                showNotification('يرجى تسجيل الدخول أولاً', 'error');
-                return;
-            }
-            
-            const productName = document.getElementById('productName').value.trim();
-            const productPrice = document.getElementById('productPrice').value.trim();
-            const saveBtn = document.getElementById('saveProductBtn');
-            
-            if (!productName) {
-                showNotification('يرجى إدخال اسم المنتج', 'error');
-                document.getElementById('productName').focus();
-                return;
-            }
-            
-            if (!productPrice) {
-                showNotification('يرجى إدخال سعر المنتج', 'error');
-                document.getElementById('productPrice').focus();
-                return;
-            }
-            
-            const price = parseFloat(productPrice);
-            if (isNaN(price) || price <= 0) {
-                showNotification('يرجى إدخال سعر صحيح', 'error');
-                document.getElementById('productPrice').focus();
-                return;
-            }
-            
-            saveBtn.disabled = true;
-            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
-            
-            try {
-                const productId = editingProductId || Date.now().toString();
-                
-                await updateDB(refDB(db, 'users/' + user.id + '/products/' + productId), {
-                    id: productId,
-                    name: productName,
-                    price: price,
-                    sellerId: user.id,
-                    sellerName: user.name,
-                    createdAt: editingProductId ? (user.products[productId]?.createdAt || new Date().toISOString()) : new Date().toISOString(),
-                    updatedAt: new Date().toISOString()
-                });
-                
-                closeProductModal();
-                showNotification(editingProductId ? 'تم تحديث المنتج' : 'تم إضافة المنتج', 'success');
-                
-            } catch (error) {
-                console.error('خطأ في حفظ المنتج:', error);
-                showNotification('حدث خطأ في حفظ المنتج', 'error');
-            } finally {
-                saveBtn.disabled = false;
-                saveBtn.innerHTML = '<i class="fas fa-save"></i> حفظ المنتج';
-            }
-        }
-
-        async function deleteProduct(productId) {
-            if (!user || !confirm('هل أنت متأكد من حذف هذا المنتج؟')) {
-                return;
-            }
-            
-            try {
-                await updateDB(refDB(db, 'users/' + user.id + '/products/' + productId), null);
-                showNotification('تم حذف المنتج', 'success');
-            } catch (error) {
-                console.error('خطأ في حذف المنتج:', error);
-                showNotification('حدث خطأ في حذف المنتج', 'error');
-            }
-        }
-
-        function displayProducts() {
-            const productsGrid = document.getElementById('productsGrid');
-            
-            if (!user || !user.products || Object.keys(user.products).length === 0) {
-                productsGrid.innerHTML = `
-                    <div style="text-align: center; padding: 50px; color: #666; grid-column: 1 / -1;">
-                        <i class="fas fa-box-open" style="font-size: 60px; margin-bottom: 25px; opacity: 0.5;"></i>
-                        <p style="font-size: 18px;">لا توجد منتجات. أضف منتجك الأول!</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            let html = '';
-            for (const productId in user.products) {
-                const product = user.products[productId];
-                html += `
-                    <div class="product-card">
-                        <div class="product-header">
-                            <div class="product-name">${product.name}</div>
-                            <div class="product-price">$${product.price.toFixed(2)}</div>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-id">رقم المنتج: ${product.id}</div>
-                            <div class="product-seller">
-                                <i class="fas fa-user"></i>
-                                البائع: ${product.sellerName || user.name}
-                            </div>
-                        </div>
-                        <div class="product-actions">
-                            <button class="action-btn edit-btn" onclick="openEditProductModal('${productId}')">
-                                <i class="fas fa-edit"></i> تعديل
-                            </button>
-                            <button class="action-btn delete-btn" onclick="deleteProduct('${productId}')">
-                                <i class="fas fa-trash"></i> حذف
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }
-            productsGrid.innerHTML = html;
-        }
-
+        // ========== وظائف مساعدة ==========
         function goHome() {
             window.location.reload();
         }
