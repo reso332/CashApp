@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CashApp</title>
-    <link rel="icon" type="image/png" href="IMG_0018.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap">
     <style>
@@ -1049,19 +1048,6 @@
             }
         }
 
-        async function hashPassword(password) {
-            try {
-                const encoder = new TextEncoder();
-                const data = encoder.encode(password);
-                const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-                const hashArray = Array.from(new Uint8Array(hashBuffer));
-                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            } catch (error) {
-                console.error('Error hashing password:', error);
-                throw error;
-            }
-        }
-
         function generateUserId() {
             return Math.floor(10000000000 + Math.random() * 90000000000).toString();
         }
@@ -1086,7 +1072,7 @@
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             
             try {
-                const hashedPassword = await hashPassword(password);
+                // تم إزالة التشفير - كلمة المرور تحفظ كما هي
                 let userId = generateUserId();
                 
                 const usersIndexRef = childDB(refDB(db), 'indexes/users');
@@ -1106,10 +1092,11 @@
                 const snap = await getDB(userRef);
                 
                 if (!snap.exists()) {
+                    // حفظ كلمة المرور كما هي بدون تشفير
                     await setDB(userRef, {
                         name: username,
                         id: userId,
-                        passwordHash: hashedPassword,
+                        password: password, // حفظ كلمة المرور مباشرة
                         money: 0,
                         createdAt: new Date().toISOString(),
                         lastLogin: new Date().toISOString()
@@ -1120,7 +1107,7 @@
                     user = {
                         name: username,
                         id: userId,
-                        passwordHash: hashedPassword,
+                        password: password,
                         money: 0
                     };
                     
@@ -1133,7 +1120,8 @@
                         return;
                     }
                     
-                    if (userData.passwordHash !== hashedPassword) {
+                    // التحقق من كلمة المرور مباشرة
+                    if (userData.password !== password) {
                         showNotification('loginError', 'error');
                         return;
                     }
