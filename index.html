@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CashApp</title>
+<style>
+  :root{
+    --bg:#f4f6f5; --card:#ffffff; --green:#16a34a; --green-dark:#15803d;
+    --green-soft:#e8f5ec; --text:#1f2937; --muted:#6b7280; --border:#d1d5db;
+    --danger:#dc2626; --gold:#b8860b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Arial,sans-serif}
+  body{background:var(--bg);color:var(--text);min-height:100vh}
+  .hidden{display:none!important}
+  button{font-family:inherit}
+
+  /* ===== Auth screen ===== */
+  #authScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+  .auth-box{background:var(--card);border:2px solid var(--green);border-radius:16px;padding:35px 30px;width:100%;max-width:400px;box-shadow:0 10px 30px rgba(22,163,74,.12)}
+  .auth-box h1{text-align:center;font-size:26px;color:var(--green-dark);margin-bottom:5px}
+  .auth-box p.sub{text-align:center;color:var(--muted);font-size:14px;margin-bottom:25px}
+  .field{margin-bottom:15px}
+  .field label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+  .field input{width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--text);font-size:15px;outline:none}
+  .field input:focus{border-color:var(--green)}
+  .btn{width:100%;padding:13px;border:none;border-radius:10px;background:var(--green);color:#fff;font-size:16px;font-weight:700;cursor:pointer;transition:.2s}
+  .btn:hover{background:var(--green-dark)}
+  .btn:disabled{opacity:.6;cursor:not-allowed}
+  .switch-mode{text-align:center;margin-top:18px;font-size:14px;color:var(--muted)}
+  .switch-mode a{color:var(--green-dark);cursor:pointer;font-weight:700}
+  #authMsg{text-align:center;margin-top:12px;font-size:14px;min-height:20px}
+  .err{color:var(--danger)} .ok{color:var(--green-dark)}
+
+  /* ===== App ===== */
+  #app{max-width:480px;margin:0 auto;padding:20px 16px 60px}
+  .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+  .header h2{font-size:20px;color:var(--green-dark)}
+  .header-right{display:flex;gap:8px;align-items:center}
+  .logout-btn{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px}
+  .gold-badge{background:linear-gradient(135deg,#d4af37,#b8860b);color:#fff;font-weight:800;font-size:12px;padding:4px 12px;border-radius:20px}
+
+  .balance-card{background:var(--card);border:2px solid var(--green);border-radius:16px;padding:25px;text-align:center;margin-bottom:16px;box-shadow:0 6px 20px rgba(22,163,74,.10);position:relative}
+  .balance-card .label{color:var(--muted);font-size:14px;margin-bottom:8px}
+  .balance-card .amount{font-size:38px;font-weight:800;letter-spacing:1px;color:var(--green-dark)}
+  .balance-card .currency{font-size:14px;color:var(--muted);margin-top:4px}
+  .live-dot{position:absolute;top:15px;left:15px;display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
+  .live-dot span{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+  .id-box{background:var(--card);border:1.5px solid var(--green);border-radius:14px;padding:16px;text-align:center;margin-bottom:16px}
+  .id-box .label{color:var(--muted);font-size:13px;margin-bottom:8px}
+  .id-value{font-size:24px;font-weight:800;letter-spacing:4px;font-family:'Courier New',monospace;color:var(--green-dark)}
+  .copy-btn{margin-top:10px;background:var(--green-soft);border:1px solid var(--green);color:var(--green-dark);padding:8px 20px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:700}
+  .copy-btn:hover{background:var(--green);color:#fff}
+
+  .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
+  .stat{background:var(--card);border:1.5px solid var(--green);border-radius:12px;padding:14px 8px;text-align:center}
+  .stat .num{font-size:17px;font-weight:800}
+  .stat .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+  .stat.green .num{color:var(--green-dark)} .stat.red .num{color:var(--danger)}
+
+  .actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+  .action-btn{padding:18px;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:.2s;color:#fff}
+  .send-btn{background:var(--green)}
+  .send-btn:hover{background:var(--green-dark)}
+  .recv-btn{background:var(--green-dark)}
+  .recv-btn:hover{background:#14532d}
+
+  .section-title{font-size:15px;color:var(--muted);margin:10px 0}
+  .tx-list{display:flex;flex-direction:column;gap:10px}
+  .tx-item{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--green);border-radius:10px;padding:14px;display:flex;justify-content:space-between;align-items:center}
+  .tx-item.out{border-left-color:var(--danger)}
+  .tx-item .info .t{font-size:14px;font-weight:700}
+  .tx-item .info .d{font-size:11px;color:var(--muted);margin-top:3px}
+  .tx-item .amt{font-weight:800;font-size:15px}
+  .tx-item .amt.in{color:var(--green-dark)} .tx-item .amt.out{color:var(--danger)}
+  .empty{text-align:center;color:var(--muted);padding:30px;font-size:14px;background:var(--card);border:1px dashed var(--border);border-radius:10px}
+
+  /* ===== Modals ===== */
+  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:20px;z-index:100}
+  .modal{background:#fff;border:2px solid var(--green);border-radius:16px;padding:28px 24px;width:100%;max-width:400px;max-height:90vh;overflow-y:auto}
+  .modal h3{text-align:center;font-size:20px;color:var(--green-dark);margin-bottom:20px}
+  .modal .close-x{float:right;cursor:pointer;color:var(--muted);font-size:22px;line-height:1}
+  .recv-id-display{background:var(--green-soft);border:1.5px dashed var(--green);border-radius:12px;padding:20px;text-align:center;margin-bottom:18px}
+  .recv-id-display .big{font-size:28px;font-weight:800;letter-spacing:4px;font-family:'Courier New',monospace;color:var(--green-dark);margin:10px 0}
+  .tax-note{text-align:center;font-size:12px;color:var(--muted);margin-top:12px}
+  .tax-note b{color:var(--gold)}
+
+  .receipt{background:var(--green-soft);border:1.5px solid var(--green);border-radius:12px;padding:18px;margin-bottom:18px}
+  .receipt .row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed var(--border);font-size:14px}
+  .receipt .row:last-child{border-bottom:none}
+  .receipt .row .v{font-weight:700}
+  .success-icon{text-align:center;font-size:44px;font-weight:800;color:var(--green);margin-bottom:6px}
+  .success-title{text-align:center;color:var(--green-dark);font-weight:800;font-size:18px;margin-bottom:18px}
+</style>
+<base target="_blank">
+</head>
+<body>
+
+<!-- ============ Auth screen ============ -->
+<div id="authScreen">
+  <div class="auth-box">
+    <h1>CashApp</h1>
+    <p class="sub">Your personal dollar wallet</p>
+    <div class="field"><label>Username</label><input id="authUser" placeholder="Enter your username" autocomplete="username"></div>
+    <div class="field"><label>Password</label><input id="authPass" type="password" placeholder="Enter your password" autocomplete="current-password"></div>
+    <button class="btn" id="authBtn">Sign In</button>
+    <p class="switch-mode"><span id="switchText">Don't have an account?</span> <a id="switchLink">Create one</a></p>
+    <p id="authMsg"></p>
+  </div>
+</div>
+
+<!-- ============ App ============ -->
+<div id="app" class="hidden">
+  <div class="header">
+    <h2>CashApp</h2>
+    <div class="header-right">
+      <span id="goldBadge" class="gold-badge hidden">GOLD</span>
+      <button class="logout-btn" id="logoutBtn">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="balance-card">
+    <div class="live-dot"><span></span> LIVE</div>
+    <div class="label">Current Balance</div>
+    <div class="amount">$<span id="balanceVal">0.00</span></div>
+    <div class="currency">US Dollar</div>
+  </div>
+
+  <div class="id-box">
+    <div class="label">Your Transfer ID (for receiving money)</div>
+    <div class="id-value" id="myIdVal">------------</div>
+    <button class="copy-btn" id="copyIdBtn">Copy ID</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat green"><div class="num" id="statReceived">$0</div><div class="lbl">Total Received</div></div>
+    <div class="stat red"><div class="num" id="statSent">$0</div><div class="lbl">Total Sent</div></div>
+    <div class="stat"><div class="num" id="statCount">0</div><div class="lbl">Transactions</div></div>
+  </div>
+
+  <div class="actions">
+    <button class="action-btn recv-btn" id="openReceive">Receive</button>
+    <button class="action-btn send-btn" id="openSend">Send</button>
+  </div>
+
+  <p class="section-title">Transaction History</p>
+  <div class="tx-list" id="txList"><div class="empty">No transactions yet</div></div>
+</div>
+
+<!-- ============ Receive modal ============ -->
+<div id="receiveModal" class="modal-bg hidden">
+  <div class="modal">
+    <span class="close-x" data-close="receiveModal">x</span>
+    <h3>Receive Money</h3>
+    <p style="text-align:center;color:var(--muted);font-size:14px;margin-bottom:15px">Share this ID with the sender:</p>
+    <div class="recv-id-display">
+      <div style="font-size:13px;color:var(--muted)">Your ID</div>
+      <div class="big" id="recvIdVal">------------</div>
+      <button class="copy-btn" id="copyIdBtn2">Copy</button>
+    </div>
+    <button class="btn" data-close="receiveModal">Done</button>
+  </div>
+</div>
+
+<!-- ============ Send modal ============ -->
+<div id="sendModal" class="modal-bg hidden">
+  <div class="modal">
+    <span class="close-x" data-close="sendModal">x</span>
+    <h3>Send Money</h3>
+    <div class="field"><label>Recipient ID (12 digits)</label><input id="sendToId" maxlength="12" inputmode="numeric" placeholder="e.g. 482910573621" style="text-align:center;letter-spacing:3px"></div>
+    <div class="field"><label>Amount ($)</label><input id="sendAmount" type="number" min="1" step="0.01" placeholder="0.00"></div>
+    <div id="feePreview" class="tax-note hidden"></div>
+    <p id="sendMsg" style="text-align:center;margin-top:10px"></p>
+    <button class="btn" id="doSendBtn" style="margin-top:15px">Send Transfer</button>
+  </div>
+</div>
+
+<!-- ============ Receipt modal ============ -->
+<div id="receiptModal" class="modal-bg hidden">
+  <div class="modal">
+    <div class="success-icon">&#10003;</div>
+    <div class="success-title">Transfer completed successfully</div>
+    <div class="receipt">
+      <div class="row"><span>Transaction No.</span><span class="v" id="rTxId" style="font-family:monospace">-</span></div>
+      <div class="row"><span>Recipient</span><span class="v" id="rToName">-</span></div>
+      <div class="row"><span>Amount Sent</span><span class="v" id="rAmount" style="color:var(--danger)">-</span></div>
+      <div class="row" id="rFeeRow"><span>Tax</span><span class="v" id="rFee">-</span></div>
+      <div class="row"><span>Total Deducted</span><span class="v" id="rTotal" style="color:var(--danger)">-</span></div>
+      <div class="row"><span>Remaining Balance</span><span class="v" id="rRemaining" style="color:var(--green-dark)">-</span></div>
+      <div class="row"><span>Date</span><span class="v" id="rDate">-</span></div>
+    </div>
+    <button class="btn" data-close="receiptModal">Close</button>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getDatabase, ref, get, set, update, push, onValue, off }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAw2y8F44ilNOYjXv-kV3oimdQ7lWtfyDA",
+  authDomain: "cashapp-6a4b1.firebaseapp.com",
+  databaseURL: "https://cashapp-6a4b1-default-rtdb.firebaseio.com",
+  projectId: "cashapp-6a4b1",
+  storageBucket: "cashapp-6a4b1.firebasestorage.app",
+  messagingSenderId: "129250921796",
+  appId: "1:129250921796:web:83cc192834011ae9859b11",
+  measurementId: "G-RK33WK33FQ"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+let currentUser = null, userData = null, settings = { taxEnabled: false, taxRate: 0.05 };
+let transactions = [];
+let userRefListener = null, settingsRefListener = null, txRefListener = null;
+
+/* ---------- Helpers ---------- */
+const $ = id => document.getElementById(id);
+const fmt = n => Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const genId12 = () => Array.from({length:12},()=>Math.floor(Math.random()*10)).join('');
+
+async function uniqueId12(){
+  while(true){
+    const id = genId12();
+    const snap = await get(ref(db, 'users'));
+    let exists = false;
+    if(snap.exists()){
+      const users = snap.val();
+      for(let uid in users){
+        if(users[uid].userId === id){ exists = true; break; }
+      }
+    }
+    if(!exists) return id;
+  }
+}
+
+function copyText(t){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(()=>alert('Copied: ' + t)).catch(()=>fallbackCopy(t));
+  } else fallbackCopy(t);
+}
+function fallbackCopy(t){
+  const ta = document.createElement('textarea');
+  ta.value = t; document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); alert('Copied: ' + t); }catch(e){ alert('Copy failed. Your ID: ' + t); }
+  document.body.removeChild(ta);
+}
+
+function openModal(id){ $(id).classList.remove('hidden'); }
+function closeModal(id){ $(id).classList.add('hidden'); }
+document.querySelectorAll('[data-close]').forEach(el=>el.addEventListener('click',()=>closeModal(el.dataset.close)));
+document.querySelectorAll('.modal-bg').forEach(bg=>bg.addEventListener('click',e=>{ if(e.target===bg) bg.classList.add('hidden'); }));
+
+/* ---------- Start Realtime Listeners ---------- */
+async function startListeners(){
+  if(!currentUser) return;
+
+  const userRef = ref(db, 'users/' + currentUser.uid);
+  
+  // Check if user node exists in RTDB, if not create it immediately with 0 balance and 12-digit ID
+  const initialSnap = await get(userRef);
+  if(!initialSnap.exists()){
+    const username = currentUser.email ? currentUser.email.split('@')[0] : 'User';
+    const newId = await uniqueId12();
+    await set(userRef, {
+      username: username,
+      userId: newId,
+      balance: 0,
+      isGold: false,
+      createdAt: Date.now()
+    });
+  }
+
+  // Realtime listener for User Data (Balance, ID, Gold status)
+  userRefListener = onValue(userRef, snap => {
+    if(!snap.exists()) return;
+    userData = snap.val();
+    $('balanceVal').textContent = fmt(userData.balance);
+    $('myIdVal').textContent = userData.userId;
+    $('recvIdVal').textContent = userData.userId;
+    document.body.classList.toggle('gold', !!userData.isGold);
+    $('goldBadge').classList.toggle('hidden', !userData.isGold);
+  });
+
+  // Realtime listener for Global Settings (Tax)
+  const settingsRef = ref(db, 'settings/global');
+  settingsRefListener = onValue(settingsRef, snap => {
+    if(snap.exists()){
+      settings = snap.val();
+    } else {
+      // Default settings if missing
+      set(settingsRef, { taxEnabled: false, taxRate: 0.05 });
+    }
+    updateFeePreview();
+  });
+
+  // Realtime listener for Transactions
+  const txRef = ref(db, 'transactions');
+  txRefListener = onValue(txRef, snap => {
+    transactions = [];
+    if(snap.exists()){
+      const allTx = snap.val();
+      for(let key in allTx){
+        const t = allTx[key];
+        if(t.fromUid === currentUser.uid){
+          transactions.push({ id: key, ...t, _dir: 'out' });
+        } else if(t.toUid === currentUser.uid){
+          transactions.push({ id: key, ...t, _dir: 'in' });
+        }
+      }
+      // Sort newest first
+      transactions.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
+    }
+    renderStats();
+    renderTxList();
+  });
+}
+
+function stopListeners(){
+  if(userRefListener && currentUser) off(ref(db, 'users/' + currentUser.uid));
+  off(ref(db, 'settings/global'));
+  off(ref(db, 'transactions'));
+  userRefListener = null;
+  settingsRefListener = null;
+  txRefListener = null;
+  userData = null;
+}
+
+function renderStats(){
+  let sent=0, recv=0;
+  transactions.forEach(t=>{
+    if(t._dir==='out') sent += Number(t.total || t.amount || 0);
+    else recv += Number(t.amount || 0);
+  });
+  $('statSent').textContent = '$'+fmt(sent);
+  $('statReceived').textContent = '$'+fmt(recv);
+  $('statCount').textContent = transactions.length;
+}
+
+function renderTxList(){
+  const box = $('txList');
+  if(!transactions.length){ box.innerHTML='<div class="empty">No transactions yet</div>'; return; }
+  box.innerHTML = transactions.map(t=>{
+    const isIn = t._dir==='in';
+    const name = isIn ? ('Received from: '+ (t.fromName||'User')) : ('Sent to: '+(t.toName||'User'));
+    const date = t.timestamp ? new Date(t.timestamp).toLocaleString('en-US') : '';
+    const amt = (isIn?'+':'-') + fmt(isIn ? t.amount : (t.total||t.amount));
+    return `<div class="tx-item ${isIn?'':'out'}"><div class="info"><div class="t">${name}</div><div class="d">${date}</div></div><div class="amt ${isIn?'in':'out'}">$${amt}</div></div>`;
+  }).join('');
+}
+
+/* ---------- Sign in / Register ---------- */
+let isRegisterMode = false;
+$('switchLink').onclick = ()=>{
+  isRegisterMode = !isRegisterMode;
+  $('authBtn').textContent = isRegisterMode ? 'Create Account' : 'Sign In';
+  $('switchText').textContent = isRegisterMode ? 'Already have an account?' : "Don't have an account?";
+  $('switchLink').textContent = isRegisterMode ? 'Sign in' : 'Create one';
+  $('authMsg').textContent = '';
+};
+const emailOf = u => u.trim().toLowerCase().replace(/\s+/g,'') + '@cashapp.local';
+
+$('authBtn').onclick = async ()=>{
+  const u = $('authUser').value.trim(), p = $('authPass').value;
+  const msg = $('authMsg'); msg.textContent=''; msg.className='';
+  if(!u || !p){ msg.textContent='Please enter username and password'; msg.className='err'; return; }
+  if(p.length < 6){ msg.textContent='Password must be at least 6 characters'; msg.className='err'; return; }
+  $('authBtn').disabled = true; msg.textContent='Please wait...'; msg.className='';
+  try{
+    if(isRegisterMode){
+      const cred = await createUserWithEmailAndPassword(auth, emailOf(u), p);
+      const newUserId = await uniqueId12();
+      await set(ref(db, 'users/' + cred.user.uid), {
+        username: u,
+        userId: newUserId,
+        balance: 0,             // الرصيد يبدأ بـ 0 دولار
+        isGold: false,          // عدلها في فايربيس لتصبح true
+        createdAt: Date.now()
+      });
+    } else {
+      await signInWithEmailAndPassword(auth, emailOf(u), p);
+    }
+  }catch(e){
+    let m = e.message;
+    if(e.code==='auth/invalid-credential') m = 'Wrong username or password';
+    else if(e.code==='auth/email-already-in-use') m = 'Username already taken, please sign in';
+    else if(e.code==='auth/too-many-requests') m = 'Too many attempts, try again later';
+    msg.textContent = m; msg.className='err';
+  }
+  $('authBtn').disabled = false;
+};
+$('authPass').addEventListener('keydown',e=>{ if(e.key==='Enter') $('authBtn').click(); });
+$('authUser').addEventListener('keydown',e=>{ if(e.key==='Enter') $('authBtn').click(); });
+
+/* ---------- Auth State Change ---------- */
+onAuthStateChanged(auth, async user=>{
+  currentUser = user;
+  if(user){
+    $('authScreen').classList.add('hidden');
+    $('app').classList.remove('hidden');
+    $('authMsg').textContent='';
+    await startListeners();
+  } else {
+    stopListeners();
+    $('authScreen').classList.remove('hidden');
+    $('app').classList.add('hidden');
+    document.body.classList.remove('gold');
+    transactions = [];
+  }
+});
+$('logoutBtn').onclick = ()=>signOut(auth);
+
+/* ---------- Copy ID ---------- */
+$('copyIdBtn').onclick = ()=> userData && copyText(userData.userId);
+$('copyIdBtn2').onclick = ()=> userData && copyText(userData.userId);
+
+/* ---------- Open Modals ---------- */
+$('openReceive').onclick = ()=>openModal('receiveModal');
+$('openSend').onclick = ()=>{ $('sendMsg').textContent=''; openModal('sendModal'); updateFeePreview(); };
+
+/* ---------- Tax Preview ---------- */
+function updateFeePreview(){
+  const amt = Number($('sendAmount').value)||0;
+  const box = $('feePreview');
+  if(settings.taxEnabled && amt>0){
+    const fee = amt * (settings.taxRate||0);
+    box.innerHTML = `Transfer tax is active: <b>${(settings.taxRate*100).toFixed(0)}%</b> = $${fmt(fee)} - Total: $${fmt(amt+fee)}`;
+    box.classList.remove('hidden');
+  } else box.classList.add('hidden');
+}
+$('sendAmount').addEventListener('input', updateFeePreview);
+
+/* ---------- Execute Transfer ---------- */
+$('doSendBtn').onclick = async ()=>{
+  const toId = $('sendToId').value.trim();
+  const amt = Number($('sendAmount').value);
+  const msg = $('sendMsg'); msg.textContent=''; msg.className='';
+  if(!/^\d{12}$/.test(toId)){ msg.textContent='ID must be exactly 12 digits'; msg.className='err'; return; }
+  if(!(amt>0)){ msg.textContent='Enter a valid amount'; msg.className='err'; return; }
+  if(userData && toId === userData.userId){ msg.textContent='You cannot send money to yourself'; msg.className='err'; return; }
+
+  $('doSendBtn').disabled = true; msg.textContent='Processing transfer...';
+  try{
+    const fee = settings.taxEnabled ? amt * (settings.taxRate||0) : 0;
+    const total = amt + fee;
+
+    // Find recipient by 12-digit userId in Realtime Database
+    const usersSnap = await get(ref(db, 'users'));
+    if(!usersSnap.exists()) throw new Error('Recipient not found');
+    
+    let recipientUid = null;
+    let recipientData = null;
+    const allUsers = usersSnap.val();
+    for(let uid in allUsers){
+      if(allUsers[uid].userId === toId){
+        recipientUid = uid;
+        recipientData = allUsers[uid];
+        break;
+      }
+    }
+    if(!recipientUid) throw new Error('Recipient ID not found');
+
+    // Check sender balance
+    const senderBal = Number(userData.balance) || 0;
+    if(senderBal < total) throw new Error('Insufficient balance (amount + tax)');
+
+    const recipientBal = Number(recipientData.balance) || 0;
+
+    // Update balances
+    await update(ref(db, 'users/' + currentUser.uid), { balance: senderBal - total });
+    await update(ref(db, 'users/' + recipientUid), { balance: recipientBal + amt });
+
+    // Push transaction record
+    const newTxRef = push(ref(db, 'transactions'));
+    await set(newTxRef, {
+      fromUid: currentUser.uid,
+      fromName: userData.username,
+      toUid: recipientUid,
+      toName: recipientData.username,
+      amount: amt,
+      fee: fee,
+      total: total,
+      timestamp: Date.now()
+    });
+
+    // Show receipt
+    $('rTxId').textContent = newTxRef.key.slice(0,10).toUpperCase();
+    $('rToName').textContent = recipientData.username;
+    $('rAmount').textContent = '$'+fmt(amt);
+    $('rFee').textContent = '$'+fmt(fee);
+    $('rFeeRow').style.display = fee>0 ? 'flex' : 'none';
+    $('rTotal').textContent = '$'+fmt(total);
+    $('rRemaining').textContent = '$'+fmt(senderBal - total);
+    $('rDate').textContent = new Date().toLocaleString('en-US');
+    
+    closeModal('sendModal');
+    openModal('receiptModal');
+    $('sendToId').value=''; $('sendAmount').value='';
+  }catch(e){
+    msg.textContent = e.message; msg.className='err';
+  }
+  $('doSendBtn').disabled = false;
+};
+</script>
+</body>
+</html>
