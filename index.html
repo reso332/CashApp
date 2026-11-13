@@ -40,6 +40,11 @@
   .logout-btn{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px}
   .gold-badge{background:linear-gradient(135deg,#d4af37,#b8860b);color:#fff;font-weight:800;font-size:12px;padding:4px 12px;border-radius:20px}
 
+  /* ===== Username Box Added Here ===== */
+  .username-box{background:var(--card);border:1.5px solid var(--green);border-radius:14px;padding:14px;text-align:center;margin-bottom:16px}
+  .username-box .label{color:var(--muted);font-size:13px;margin-bottom:4px}
+  .username-value{font-size:20px;font-weight:800;color:var(--green-dark)}
+
   .balance-card{background:var(--card);border:2px solid var(--green);border-radius:16px;padding:25px;text-align:center;margin-bottom:16px;box-shadow:0 6px 20px rgba(22,163,74,.10);position:relative}
   .balance-card .label{color:var(--muted);font-size:14px;margin-bottom:8px}
   .balance-card .amount{font-size:38px;font-weight:800;letter-spacing:1px;color:var(--green-dark)}
@@ -119,6 +124,12 @@
       <span id="goldBadge" class="gold-badge hidden">GOLD</span>
       <button class="logout-btn" id="logoutBtn">Sign Out</button>
     </div>
+  </div>
+
+  <!-- Username Box -->
+  <div class="username-box">
+    <div class="label">Signed in as</div>
+    <div class="username-value" id="usernameDisplay">---</div>
   </div>
 
   <div class="balance-card">
@@ -264,7 +275,6 @@ async function startListeners(){
 
   const userRef = ref(db, 'users/' + currentUser.uid);
   
-  // Check if user node exists in RTDB, if not create it immediately with 0 balance and 12-digit ID
   const initialSnap = await get(userRef);
   if(!initialSnap.exists()){
     const username = currentUser.email ? currentUser.email.split('@')[0] : 'User';
@@ -278,30 +288,27 @@ async function startListeners(){
     });
   }
 
-  // Realtime listener for User Data (Balance, ID, Gold status)
   userRefListener = onValue(userRef, snap => {
     if(!snap.exists()) return;
     userData = snap.val();
     $('balanceVal').textContent = fmt(userData.balance);
     $('myIdVal').textContent = userData.userId;
     $('recvIdVal').textContent = userData.userId;
+    $('usernameDisplay').textContent = userData.username || 'User';
     document.body.classList.toggle('gold', !!userData.isGold);
     $('goldBadge').classList.toggle('hidden', !userData.isGold);
   });
 
-  // Realtime listener for Global Settings (Tax)
   const settingsRef = ref(db, 'settings/global');
   settingsRefListener = onValue(settingsRef, snap => {
     if(snap.exists()){
       settings = snap.val();
     } else {
-      // Default settings if missing
       set(settingsRef, { taxEnabled: false, taxRate: 0.05 });
     }
     updateFeePreview();
   });
 
-  // Realtime listener for Transactions
   const txRef = ref(db, 'transactions');
   txRefListener = onValue(txRef, snap => {
     transactions = [];
@@ -315,7 +322,6 @@ async function startListeners(){
           transactions.push({ id: key, ...t, _dir: 'in' });
         }
       }
-      // Sort newest first
       transactions.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
     }
     renderStats();
@@ -380,8 +386,8 @@ $('authBtn').onclick = async ()=>{
       await set(ref(db, 'users/' + cred.user.uid), {
         username: u,
         userId: newUserId,
-        balance: 0,             // الرصيد يبدأ بـ 0 دولار
-        isGold: false,          // عدلها في فايربيس لتصبح true
+        balance: 0,
+        isGold: false,
         createdAt: Date.now()
       });
     } else {
@@ -451,7 +457,6 @@ $('doSendBtn').onclick = async ()=>{
     const fee = settings.taxEnabled ? amt * (settings.taxRate||0) : 0;
     const total = amt + fee;
 
-    // Find recipient by 12-digit userId in Realtime Database
     const usersSnap = await get(ref(db, 'users'));
     if(!usersSnap.exists()) throw new Error('Recipient not found');
     
@@ -467,17 +472,14 @@ $('doSendBtn').onclick = async ()=>{
     }
     if(!recipientUid) throw new Error('Recipient ID not found');
 
-    // Check sender balance
     const senderBal = Number(userData.balance) || 0;
     if(senderBal < total) throw new Error('Insufficient balance (amount + tax)');
 
     const recipientBal = Number(recipientData.balance) || 0;
 
-    // Update balances
     await update(ref(db, 'users/' + currentUser.uid), { balance: senderBal - total });
     await update(ref(db, 'users/' + recipientUid), { balance: recipientBal + amt });
 
-    // Push transaction record
     const newTxRef = push(ref(db, 'transactions'));
     await set(newTxRef, {
       fromUid: currentUser.uid,
@@ -490,7 +492,6 @@ $('doSendBtn').onclick = async ()=>{
       timestamp: Date.now()
     });
 
-    // Show receipt
     $('rTxId').textContent = newTxRef.key.slice(0,10).toUpperCase();
     $('rToName').textContent = recipientData.username;
     $('rAmount').textContent = '$'+fmt(amt);
